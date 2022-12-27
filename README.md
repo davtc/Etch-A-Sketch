@@ -13,4 +13,4 @@ Create a pixel sketching application in the browser with adjustable grid sizes a
 </ul>
 
 ## Author 
-David Tran
+- David Tran
