@@ -3,31 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Etch-a-sketch</title>
+    <title>Etch-a-Sketch</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
-    <script src="sketch.js"></script>
   </head>
-  <body>
+  <body onload="init()">
     <header>
-        <h1>Etch-a-sketch</h1>
+        <h1>Etch-a-Sketch</h1>
     </header>
     <main>
-        <div class="settings">
+        <div class="main-wrapper">
+          <div class="settings">
+        	  <h3>Pick A Colour:</h3>
+            <input type="color" id="colourpick"></input>
             <button id="colour">Colour</button>
-            <button id="rainbow">Rainbow</button>
+            <button id="random">Random</button>
             <button id="eraser">Eraser</button>
-            <button id="clear">Clear</button>
-        </div>
-        <div class="grid">
-
+            <button style="margin-top: 200px;" id="clear">Clear</button>
+          </div>
+          <div class="grid-container" id="grid"></div>
+          <div class = "settings">
+            <h3>Input Mode:</h3>
+            <button id="hold">Hold</button>
+            <button id="hover">Hover</button>
+            <h3>Toggle:</h3>
+            <button id="toggle">Grid Lines</button>
+            <button style="margin-top: 170px;" id="save">Save</button>
+          </div>
         </div>
         <div class="slider-container">
             <h3>Grid Size:</h3>
-            <input class="slider" type="range" id="pixel" step="1" min="1" max="64">
-            <h3 id="grid-size">16x16</h3>
+            <input class="slider" type="range" id="pixel" value="16" step="1" min="1" max="100">
+            <h3 id="grid-size"></h3>
         </div>
     </main>
+    <script src="sketch.js"></script>
   </body>

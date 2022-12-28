@@ -1,6 +1,7 @@
 html, body {
     margin: 0;
     padding: 0;
+    user-select: none;
 }
 
 body {
@@ -31,29 +32,46 @@ main {
     width: 100%;
   }
 
+.main-wrapper {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin: 50px;
+}
+
 .settings {
     display: flex;
-    position: relative;
-    margin: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #444a57;
+    margin: 30px;
 }
 
 button {
     background-color: #ddd;
     font-size: 0.8em;
     padding: 10px 40px;
-    border: 1px solid black;
+    border: 2px solid #444a57;
     border-radius: 5px;
-    margin: 10px 20px;
+    margin: 10px 10px;
+    width: 100%;
 }
 
-.grid {
+.grid-container {
     display: grid;
-    width: 600px;
-    height: 600px;
+    width: 550px;
+    height: 550px;
     background-color: white;
-    border: 1px solid black;
+    border: 1px solid #444a57;
     margin: auto;
     padding: 0;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.pixel {
+    border: 1px solid rgba(0, 0, 0, .1);
 }
 
 .slider-container {
@@ -72,6 +90,22 @@ button {
     display: flex;
     margin: auto 10px;
     width: 200px;
+}
+
+input[type="color"] {
+    background-color: #ddd;
+	border: 2px solid #444a57;
+    border-radius: 5px;
+    padding: 0;
+	width: 50px;
+	height: 40px;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+	border: none;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
