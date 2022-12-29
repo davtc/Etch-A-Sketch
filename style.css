@@ -58,13 +58,18 @@ button {
     width: 100%;
 }
 
+.active {
+    background-color: #444a57;
+    color: white;
+}
+
 .grid-container {
     display: grid;
     width: 550px;
     height: 550px;
     background-color: white;
     border: 1px solid #444a57;
-    margin: auto;
+    margin: 0px;
     padding: 0;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
@@ -78,8 +83,8 @@ button {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding: 0px 50px;
-    margin: 5px auto;
+    padding: 0px 40px;
+    margin: 0px auto;
     color: white;
     background-color: #444a57;;
     border: 1px solid black;

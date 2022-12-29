@@ -1,10 +1,13 @@
-const BLACK = '#000000'
-const WHITE = '#ffffff'
-const COLOUR_MODE = 'colour'
-const RANDOM_MODE = 'random'
-const HOLD_INPUT = 'hold'
-const HOVER_INPUT = 'hover'
+// Global Constants
+const BLACK = '#000000';
+const WHITE = '#ffffff';
+const COLOUR_MODE = 'colour';
+const RANDOM_MODE = 'random';
+const ERASER_MODE = 'eraser';
+const HOLD_INPUT = 'hold';
+const HOVER_INPUT = 'hover';
 
+// Global HTML elements
 const colourPick = document.getElementById('colourpick');
 const colourBtn = document.getElementById('colour');
 const randomBtn = document.getElementById('random');
@@ -17,13 +20,15 @@ const toggleBtn = document.getElementById('toggle');
 const pixelSld = document.getElementById('pixel');
 const sizeOutput = document.getElementById('grid-size');
 
-let colour = BLACK
-let mode = COLOUR_MODE
-let input = HOLD_INPUT
-let isDrag = false
-let gridLines = true
-let size = pixelSld.value
+// Initialise global variables
+let colour = BLACK;
+let mode = COLOUR_MODE;
+let input = HOLD_INPUT;
+let isDrag = false;
+let gridLines = true;
+let size = pixelSld.value;
 
+// Create a pixel, add it to the grid and add mouse event listerners.
 const createPixel = () => {
     const pixel = document.createElement('div');
     pixel.addEventListener('mousedown', () => {isDrag = true})
@@ -35,6 +40,7 @@ const createPixel = () => {
     grid.appendChild(pixel);
 };
 
+// Create a grid based on the selected grid size.
 const setGrid = () => {
     grid.innerHTML = '';
     grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
@@ -47,71 +53,110 @@ const setGrid = () => {
     }
 };
 
+// Fill a pixel with colour based on the drawing mode and input.
 const fillColour = (e) => {
-    if (mode == COLOUR_MODE) {
+    if (mode == COLOUR_MODE || mode == ERASER_MODE) {
         if (input == HOLD_INPUT && isDrag == true) {
             e.target.style.backgroundColor = colour;
         }  else if (input == HOVER_INPUT) {
             e.target.style.backgroundColor = colour;
         }
     } else if (mode == RANDOM_MODE) {
-        const r = Math.floor(Math.random() * 256);
-        const g = Math.floor(Math.random() * 256);
-        const b = Math.floor(Math.random() * 256);
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
         if (input == HOLD_INPUT && isDrag == true) {
-            e.target.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+            e.target.style.backgroundColor = `#${randomColor}`;
         }  else if (input == HOVER_INPUT) {
-            e.target.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+            e.target.style.backgroundColor = `#${randomColor}`;
         }
     }
 };
 
+// Set the current colour of the pen.
 const setColour = (rgb) => {
     colour = rgb;
 };
 
-const setMode = (button) => {
-    mode = button;
+// Set the drawing mode between colour, random, and eraser. 
+// Colour: Draw with the chosen colour.
+// Random: Draw with a random colour that changes after every drawn pixel.
+// Eraser: Draw with white to "erase" other colours.
+const setMode = (button, newMode) => {
+    if (mode == COLOUR_MODE) {
+        colourBtn.classList.remove('active');
+    } else if (mode == RANDOM_MODE) {
+        randomBtn.classList.remove('active');
+    } else if (mode == ERASER_MODE){
+        eraserBtn.classList.remove('active');
+    }
+    mode = newMode;
+    button.classList.add('active');
 };
 
-const setInput = (button) => {
-    input = button
-}
+// Set the drawing input between hold and hover.
+// Hold: Hold down the left mouse button over the pixels to draw.
+// Hover: Hover over the pixels to draw.
+const setInput = (button, newInput) => {
+    if (input == HOLD_INPUT) {
+        holdBtn.classList.remove('active');
+    } else {
+        hoverBtn.classList.remove('active');
+    }
+    input = newInput
+    button.classList.add('active');
+};
 
+// Set the size of the grid and display the grid size in HTML.
 const setSize = () => {
     size = pixelSld.value;
     sizeOutput.innerHTML = `${size} x ${size}`;
 };
 
+// Flash whenever a button is clicked.
+const flashButton = async (button) => {
+    button.classList.add('active');
+    await new Promise(resolve => setTimeout(resolve, 100));
+    button.classList.remove('active');
+};
+
+// Initialise the web pages.
 const init = () => {
     setSize();
     setGrid();
+    colourBtn.classList.add('active');
+    holdBtn.classList.add('active');
+    toggleBtn.classList.add('active');
 };
 
+// Functions to handle button click events.
 colourPick.oninput = () => {
     setColour(colourPick.value);
 };
 
 colourBtn.onclick = () => {
-    setMode(COLOUR_MODE);
+    setMode(colourBtn, COLOUR_MODE);
     setColour(colourPick.value);
 }
 
 randomBtn.onclick = () => {
-    setMode(RANDOM_MODE);
+    setMode(randomBtn, RANDOM_MODE);
 };
 
 eraserBtn.onclick = () => {
-    setMode(COLOUR_MODE);
+    setMode(eraserBtn, ERASER_MODE);
     setColour(WHITE);
 };
 
+clearBtn.onclick = async () => {
+    setGrid();
+    flashButton(clearBtn);
+};
+
 holdBtn.onclick = () => {
-    setInput(HOLD_INPUT);
+    setInput(holdBtn, HOLD_INPUT);
 };
 
 hoverBtn.onclick = () => {
-    setInput(HOVER_INPUT);
+    setInput(hoverBtn, HOVER_INPUT);
 };
 
 toggleBtn.onclick = () => {
@@ -123,10 +168,14 @@ toggleBtn.onclick = () => {
             pixel.classList.add('pixel');
         }
     });
+    if (gridLines) {
+        toggleBtn.classList.remove('active')
+    } else {
+        toggleBtn.classList.add('active')
+    }
     gridLines = !gridLines;
-}
+};
 
-clearBtn.onclick = setGrid;
 pixelSld.oninput = setSize;
 pixelSld.onmouseup = setGrid;
 
